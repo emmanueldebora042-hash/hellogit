@@ -1,14 +1,563 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>hello git</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blue Dream World 💙</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --blue: #70c9ff;
+      --dark-blue: #2878c8;
+      --light-blue: #eaf8ff;
+      --lavender: #eee8ff;
+      --pink: #ffdff0;
+      --white: #ffffff;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(
+        135deg,
+        #e8f8ff,
+        #f2edff,
+        #e0f4ff
+      );
+      color: #34547a;
+      overflow-x: hidden;
+    }
+
+    /* NAVIGATION */
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 8%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid #ffffff;
+    }
+
+    .logo {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--dark-blue);
+    }
+
+    .logo span {
+      color: #ff8fc8;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+    }
+
+    nav a {
+      color: #52729b;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #ff8fc8;
+    }
+
+    /* HERO SECTION */
+
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 70px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 750px;
+      z-index: 2;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 10px 20px;
+      background: white;
+      color: #579bd7;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 5px 20px #a7dfff55;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(44px, 8vw, 82px);
+      line-height: 1.1;
+      color: #378cda;
+      margin-bottom: 20px;
+    }
+
+    h1 span {
+      color: #f18cc8;
+    }
+
+    .hero p {
+      font-size: 16px;
+      line-height: 1.9;
+      max-width: 560px;
+      margin: 0 auto 30px;
+      color: #607b9d;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 27px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: 0.3s;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #68c9ff, #648eff);
+      color: white;
+      box-shadow: 0 8px 20px #70baff66;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #438dd0;
+      border: 2px solid #d5edff;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px) scale(1.03);
+    }
+
+    /* FLOATING DECORATIONS */
+
+    .float {
+      position: absolute;
+      font-size: 45px;
+      animation: float 4s ease-in-out infinite;
+      user-select: none;
+    }
+
+    .star1 { top: 18%; left: 12%; }
+    .star2 { top: 24%; right: 13%; animation-delay: 1s; }
+    .star3 { bottom: 18%; left: 18%; animation-delay: 2s; }
+    .star4 { bottom: 22%; right: 16%; animation-delay: 0.5s; }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(-8deg);
+      }
+      50% {
+        transform: translateY(-18px) rotate(8deg);
+      }
+    }
+
+    /* GENERAL SECTIONS */
+
+    section {
+      padding: 75px 8%;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(30px, 5vw, 43px);
+      color: #378cda;
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      color: #7088a6;
+      font-size: 14px;
+    }
+
+    /* DREAM CARDS */
+
+    .dreams {
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 45px 45px 0 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      padding: 32px 22px;
+      border-radius: 28px;
+      text-align: center;
+      background: white;
+      border: 2px solid #ffffff;
+      box-shadow: 0 12px 35px #9acdf222;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) rotate(-1deg);
+      box-shadow: 0 18px 35px #9acdf255;
+    }
+
+    .card-icon {
+      width: 85px;
+      height: 85px;
+      border-radius: 25px;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      margin: 0 auto 20px;
+    }
+
+    .blue { background: #e0f4ff; }
+    .pink { background: #ffebf5; }
+    .purple { background: #eee8ff; }
+
+    .card h3 {
+      font-family: 'Fredoka', sans-serif;
+      color: #4388c9;
+      font-size: 23px;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 13px;
+      line-height: 1.9;
+      color: #7186a2;
+    }
+
+    /* DAILY QUOTE */
+
+    .quote {
+      max-width: 850px;
+      margin: 20px auto;
+      padding: 45px 25px;
+      border-radius: 35px;
+      text-align: center;
+      background: linear-gradient(135deg, #83d5ff, #a9a2ff);
+      color: white;
+      box-shadow: 0 15px 35px #8dbfff44;
+    }
+
+    .quote .emoji {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+
+    .quote h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .quote p {
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .quote button {
+      margin-top: 24px;
+      background: white;
+      color: #648bd9;
+    }
+
+    /* LITTLE JOY */
+
+    .joy {
+      text-align: center;
+    }
+
+    .joy-box {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      border-radius: 30px;
+      padding: 35px 20px;
+      box-shadow: 0 10px 30px #a3d5ff33;
+    }
+
+    #joyMessage {
+      color: #5984bb;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 20px 0;
+      min-height: 55px;
+      display: grid;
+      place-items: center;
+    }
+
+    /* FOOTER */
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: #dff3ff;
+      color: #6286a8;
+      font-size: 13px;
+    }
+
+    footer .heart {
+      color: #ff82bd;
+    }
+
+    /* MOBILE FRIENDLY */
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 18px 5%;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      nav ul {
+        gap: 12px;
+      }
+
+      nav a {
+        font-size: 11px;
+      }
+
+      .hero {
+        min-height: 75vh;
+        padding: 65px 20px;
+      }
+
+      .float {
+        font-size: 30px;
+      }
+
+      .star1 { left: 5%; }
+      .star2 { right: 5%; }
+      .star3 { left: 6%; }
+      .star4 { right: 6%; }
+
+      section {
+        padding: 55px 6%;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 28px 20px;
+      }
+
+      .quote h2 {
+        font-size: 27px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Hello Git</h1>
-    <p>My name is Deborah Emmanuel</p>
-    <p>My favourite football club is Manchester City</p>
+
+  <nav>
+    <div class="logo">Blue<span>Dream</span> 💙</div>
+
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#dreams">My World</a></li>
+      <li><a href="#joy">Fun</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero" id="home">
+
+    <div class="float star1">✨</div>
+    <div class="float star2">🦋</div>
+    <div class="float star3">☁️</div>
+    <div class="float star4">💗</div>
+
+    <div class="hero-content">
+      <div class="tag">🌷 A little world full of magic</div>
+
+      <h1>
+        Hello, <span>Dreamer!</span> 💙
+      </h1>
+
+      <p>
+        Welcome to my happy little corner of the internet!
+        A place for big dreams, pretty things, happy moments,
+        and all the magic that makes you YOU. ✨
+      </p>
+
+      <div class="buttons">
+        <a href="#dreams" class="btn btn-primary">
+          Explore My World ✨
+        </a>
+
+        <a href="#joy" class="btn btn-secondary">
+          Surprise Me! 🎀
+        </a>
+      </div>
+    </div>
+
+  </header>
+
+  <section class="dreams" id="dreams">
+
+    <div class="section-title">
+      <h2>My Little Universe 🌸</h2>
+      <p>Three little things that make life extra special.</p>
+    </div>
+
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-icon blue">🎨</div>
+        <h3>Get Creative</h3>
+        <p>
+          Draw pretty pictures, make cute crafts,
+          design outfits, and let your imagination fly!
+        </p>
+      </article>
+
+      <article class="card">
+        <div class="card-icon pink">🦋</div>
+        <h3>Spread Kindness</h3>
+        <p>
+          Share smiles, be a good friend, and remember
+          that even the smallest act of kindness matters.
+        </p>
+      </article>
+
+      <article class="card">
+        <div class="card-icon purple">🌙</div>
+        <h3>Dream Big</h3>
+        <p>
+          Your dreams are special! Keep learning,
+          trying new things, and believing in yourself.
+        </p>
+      </article>
+
+    </div>
+
+  </section>
+
+  <section>
+    <div class="quote">
+      <div class="emoji">☁️✨🌈</div>
+      <h2>A Little Reminder</h2>
+      <p>
+        You are amazing just the way you are.
+        Keep your heart kind, your imagination wild,
+        and your dreams bigger than the sky. 💙
+      </p>
+    </div>
+  </section>
+
+  <section class="joy" id="joy">
+
+    <div class="section-title">
+      <h2>Sprinkle Some Happiness ✨</h2>
+      <p>Tap the button to discover a little happy thought!</p>
+    </div>
+
+    <div class="joy-box">
+      <div style="font-size: 48px;">🎀</div>
+
+      <p id="joyMessage">
+        Ready for a little sparkle?
+      </p>
+
+      <button
+        class="btn btn-primary"
+        onclick="giveJoy()"
+      >
+        Make Me Smile 💖
+      </button>
+    </div>
+
+  </section>
+
+  <footer>
+    Made with <span class="heart">♥</span> and a little
+    sprinkle of magic ✨
+    <p style="margin-top: 8px;">
+      © 2026 Blue Dream World
+    </p>
+  </footer>
+
+  <script>
+    const happyThoughts = [
+      "You are a star in your own universe! ⭐",
+      "Your imagination can take you anywhere! 🦋",
+      "You make the world a little brighter! ☀️",
+      "Today is a perfect day to try something new! 🎨",
+      "Keep shining, little dreamer! 💙",
+      "You can do amazing things, one step at a time! 🌈",
+      "You deserve a day full of smiles! 🌸",
+      "Never stop being wonderfully YOU! 🎀"
+    ];
+
+    function giveJoy() {
+      const message = document.getElementById("joyMessage");
+      const randomIndex = Math.floor(
+        Math.random() * happyThoughts.length
+      );
+
+      message.textContent = happyThoughts[randomIndex];
+    }
+  </script>
+
 </body>
 </html>
