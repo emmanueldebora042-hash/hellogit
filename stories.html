@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Choose a made-up Blue Dream story filled with imagination and inspiration.">
+  <title>Stories | Blue Dream</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: #34547a;
+      background: linear-gradient(135deg, #e8f8ff, #f2edff, #e0f4ff);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background: rgba(255, 255, 255, 0.78);
+      border-bottom: 1px solid white;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      color: #2878c8;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 25px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: #ff8fc8;
+    }
+
+    .back-link {
+      color: #52729b;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: #ff8fc8;
+    }
+
+    main {
+      width: min(1120px, 90%);
+      margin: 0 auto;
+      padding: 65px 0 78px;
+    }
+
+    .page-heading {
+      margin-bottom: 34px;
+      text-align: center;
+    }
+
+    .page-heading .eyebrow {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      background: white;
+      color: #579bd7;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    h1 {
+      margin-bottom: 12px;
+      color: #378cda;
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(38px, 7vw, 58px);
+    }
+
+    .page-heading p {
+      max-width: 570px;
+      margin: auto;
+      color: #607b9d;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .library-tools {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin: 0 auto 15px;
+      padding: 18px;
+      border: 1px solid white;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    .story-search {
+      width: min(340px, 100%);
+      min-height: 44px;
+      padding: 10px 15px;
+      border: 1px solid #d5e9fb;
+      border-radius: 24px;
+      outline: none;
+      background: white;
+      color: #34547a;
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .story-search:focus {
+      border-color: #70baff;
+      box-shadow: 0 0 0 3px #70baff33;
+    }
+
+    .story-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .filter-button {
+      min-height: 40px;
+      padding: 9px 14px;
+      border: 1px solid #d5e9fb;
+      border-radius: 22px;
+      background: white;
+      color: #52729b;
+      cursor: pointer;
+      font: 600 12px 'Poppins', sans-serif;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .filter-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .filter-button[aria-pressed="true"] {
+      border-color: transparent;
+      background: linear-gradient(135deg, #68c9ff, #648eff);
+      color: white;
+    }
+
+    .story-results {
+      min-height: 24px;
+      margin: 0 4px 16px;
+      color: #7186a2;
+      font-size: 12px;
+    }
+
+    .story-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .story-option {
+      overflow: hidden;
+      border: 2px solid white;
+      border-radius: 25px;
+      background: white;
+      box-shadow: 0 12px 35px #9acdf222;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    a.story-option {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a.story-option:hover,
+    a.story-option:focus-visible {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 35px #9acdf255;
+    }
+
+    .story-cover {
+      position: relative;
+      display: grid;
+      min-height: 208px;
+      margin: 12px 12px 0;
+      overflow: hidden;
+      place-items: center;
+      border-radius: 18px;
+    }
+
+    .cover-greedy {
+      background:
+        radial-gradient(circle at 82% 18%, #ffffffaa 0 3px, transparent 4px),
+        radial-gradient(circle at 16% 26%, #ffffffbb 0 2px, transparent 3px),
+        linear-gradient(145deg, #8bd6ff, #b8b2ff 58%, #ffe1f2);
+    }
+
+    .cover-friends {
+      background:
+        radial-gradient(circle at 80% 20%, #ffffffb8 0 3px, transparent 4px),
+        linear-gradient(145deg, #d8f4ff, #ded8ff 55%, #ffe1f2);
+    }
+
+    .cover-art {
+      background:
+        radial-gradient(circle at 25% 80%, #ffffffb8 0 4px, transparent 5px),
+        linear-gradient(145deg, #b7e9ff, #e9dcff 55%, #ffdff0);
+    }
+
+    .cover-character {
+      position: absolute;
+      display: grid;
+      width: 92px;
+      height: 92px;
+      place-items: center;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      background: #ffffffc9;
+      box-shadow: 0 8px 22px #5477aa33;
+      font-size: 51px;
+      animation: cover-float 3s ease-in-out infinite;
+    }
+
+    .cover-character.secondary {
+      margin: 35px 0 0 100px;
+      animation-delay: 0.45s;
+    }
+
+    .cover-friends .cover-character:first-child {
+      margin-left: -70px;
+    }
+
+    .cover-friends .cover-character.secondary {
+      margin-left: 70px;
+    }
+
+    .cover-art .cover-character {
+      border-radius: 26px;
+      font-size: 56px;
+      transform: rotate(-8deg);
+    }
+
+    @keyframes cover-float {
+      0%,
+      100% {
+        translate: 0 0;
+      }
+      50% {
+        translate: 0 -7px;
+      }
+    }
+
+    .cover-sparkle {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      color: white;
+      font-size: 24px;
+      animation: sparkle 2.5s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%,
+      100% {
+        opacity: 0.55;
+        transform: scale(0.85) rotate(-8deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.15) rotate(8deg);
+      }
+    }
+
+    .cover-ribbon {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      padding: 7px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #52729b;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .story-info {
+      padding: 17px 20px 20px;
+    }
+
+    .story-status {
+      display: inline-block;
+      margin-bottom: 9px;
+      color: #648bd9;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .coming-soon .story-status {
+      color: #8a82bc;
+    }
+
+    .story-option h2 {
+      margin-bottom: 7px;
+      color: #4388c9;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 22px;
+    }
+
+    .story-option p {
+      min-height: 47px;
+      color: #7186a2;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .story-action {
+      display: block;
+      margin-top: 15px;
+      color: #4388c9;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .coming-soon {
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .coming-soon .story-cover {
+      opacity: 0.85;
+    }
+
+    .coming-soon .story-action {
+      color: #8193aa;
+    }
+
+    .story-option[hidden] {
+      display: none;
+    }
+
+    .no-results {
+      padding: 28px 15px;
+      border: 1px dashed #b6d6f1;
+      border-radius: 20px;
+      color: #7186a2;
+      text-align: center;
+    }
+
+    footer {
+      padding: 26px 20px;
+      background: #dff3ff;
+      color: #6286a8;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .library-tools {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .story-search {
+        width: 100%;
+      }
+
+      .story-filters {
+        justify-content: flex-start;
+      }
+
+      .story-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      main {
+        width: 92%;
+        padding-top: 46px;
+      }
+
+      .story-list {
+        grid-template-columns: 1fr;
+      }
+
+      .story-cover {
+        min-height: 190px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav aria-label="Main navigation">
+    <a class="logo" href="index.html">Blue<span>Dream</span> 💙</a>
+    <a class="back-link" href="index.html">← Home</a>
+  </nav>
+
+  <main>
+    <header class="page-heading">
+      <span class="eyebrow">📖 The Blue Dream story library</span>
+      <h1>Find your next story</h1>
+      <p>Browse a little collection of made-up stories, each with its own characters, conversations, and life lessons.</p>
+    </header>
+
+    <div class="library-tools">
+      <label class="search-label" for="storySearch">Search stories</label>
+      <input class="story-search" id="storySearch" type="search" placeholder="Search by story title..." autocomplete="off">
+      <div class="story-filters" role="group" aria-label="Filter stories">
+        <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All stories</button>
+        <button class="filter-button" type="button" data-filter="available" aria-pressed="false">Ready to read</button>
+        <button class="filter-button" type="button" data-filter="soon" aria-pressed="false">Coming soon</button>
+      </div>
+    </div>
+    <p class="story-results" id="storyResults" aria-live="polite">Showing 3 stories.</p>
+
+    <section class="story-list" aria-label="Available Blue Dream stories">
+      <a class="story-option" data-status="available" href="the-greedy-man.html">
+        <div class="story-cover cover-greedy" aria-hidden="true">
+          <span class="cover-sparkle">✦</span>
+          <span class="cover-character">🧑‍💼</span>
+          <span class="cover-character secondary">👴</span>
+          <span class="cover-ribbon">A story of kindness</span>
+        </div>
+        <div class="story-info">
+          <span class="story-status">Ready to read</span>
+          <h2>The Greedy Man</h2>
+          <p>Calvin discovers what it feels like to need kindness and learns to change.</p>
+          <span class="story-action">Read this story <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+
+      <article class="story-option coming-soon" data-status="soon" aria-label="Kayla and Ava, coming soon">
+        <div class="story-cover cover-friends" aria-hidden="true">
+          <span class="cover-character">👧</span>
+          <span class="cover-character secondary">👧</span>
+          <span class="cover-ribbon">A new adventure</span>
+        </div>
+        <div class="story-info">
+          <span class="story-status">Coming soon</span>
+          <h2>Kayla and Ava</h2>
+          <p>This story is still being written. Come back soon to meet its characters.</p>
+          <span class="story-action">Story in progress</span>
+        </div>
+      </article>
+
+      <article class="story-option coming-soon" data-status="soon" aria-label="My Art, coming soon">
+        <div class="story-cover cover-art" aria-hidden="true">
+          <span class="cover-character">🎨</span>
+          <span class="cover-sparkle">✦</span>
+          <span class="cover-ribbon">A creative journey</span>
+        </div>
+        <div class="story-info">
+          <span class="story-status">Coming soon</span>
+          <h2>My Art</h2>
+          <p>This story is still being written. Come back soon to meet its characters.</p>
+          <span class="story-action">Story in progress</span>
+        </div>
+      </article>
+    </section>
+    <p class="no-results" id="noResults" hidden>No stories match that search. Try another title.</p>
+  </main>
+
+  <footer>
+    Made with <span style="color: #ff82bd;">♥</span> and a little sprinkle of magic ✨
+  </footer>
+
+  <script>
+    const storyCards = Array.from(document.querySelectorAll(".story-option"));
+    const storySearch = document.getElementById("storySearch");
+    const storyResults = document.getElementById("storyResults");
+    const noResults = document.getElementById("noResults");
+    const filterButtons = Array.from(document.querySelectorAll(".filter-button"));
+    let activeFilter = "all";
+
+    function updateStoryList() {
+      const query = storySearch.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      storyCards.forEach((card) => {
+        const matchesFilter = activeFilter === "all" || card.dataset.status === activeFilter;
+        const matchesSearch = card.textContent.toLowerCase().includes(query);
+        const isVisible = matchesFilter && matchesSearch;
+
+        card.hidden = !isVisible;
+        if (isVisible) {
+          visibleCount += 1;
+        }
+      });
+
+      storyResults.textContent = `Showing ${visibleCount} ${visibleCount === 1 ? "story" : "stories"}.`;
+      noResults.hidden = visibleCount > 0;
+    }
+
+    storySearch.addEventListener("input", updateStoryList);
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        filterButtons.forEach((filterButton) => {
+          filterButton.setAttribute("aria-pressed", String(filterButton === button));
+        });
+        updateStoryList();
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Read The Greedy Man, a fictional Blue Dream story about compassion and change.">
+  <title>The Greedy Man | Blue Dream</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: #34547a;
+      background: linear-gradient(135deg, #e8f8ff, #f2edff, #e0f4ff);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background: rgba(255, 255, 255, 0.78);
+      border-bottom: 1px solid white;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo,
+    .back-link {
+      text-decoration: none;
+    }
+
+    .logo {
+      color: #2878c8;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: #ff8fc8;
+    }
+
+    .back-link {
+      color: #52729b;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      color: #ff8fc8;
+    }
+
+    main {
+      width: min(900px, 90%);
+      margin: 0 auto;
+      padding: 48px 0 70px;
+    }
+
+    .story-header {
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .story-header h1 {
+      margin-bottom: 8px;
+      color: #378cda;
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(34px, 6vw, 48px);
+    }
+
+    .story-header p {
+      color: #7088a6;
+      font-size: 14px;
+    }
+
+    .reader {
+      padding: 30px;
+      border: 2px solid white;
+      border-radius: 32px;
+      background: white;
+      box-shadow: 0 12px 35px #9acdf233;
+    }
+
+    .reader-top,
+    .reader-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .reader-top {
+      margin-bottom: 18px;
+    }
+
+    .reader-top h2 {
+      color: #4388c9;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 22px;
+    }
+
+    .scene-count {
+      color: #7088a6;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .story-panel {
+      display: none;
+      grid-template-columns: minmax(230px, 0.9fr) minmax(0, 1.1fr);
+      min-height: 360px;
+      overflow: hidden;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #eaf8ff, #f3efff);
+    }
+
+    .story-panel.is-active {
+      display: grid;
+      animation: scene-enter 0.5s ease both;
+    }
+
+    @keyframes scene-enter {
+      from {
+        opacity: 0;
+        transform: translateX(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .character-stage {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px 12px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #cceeff, #e5dcff);
+    }
+
+    .character-stage::before,
+    .character-stage::after {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.8);
+      content: "✦";
+      animation: sparkle 2.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .character-stage::before {
+      top: 18%;
+      left: 18%;
+      font-size: 22px;
+    }
+
+    .character-stage::after {
+      right: 16%;
+      bottom: 20%;
+      font-size: 17px;
+      animation-delay: 0.8s;
+    }
+
+    @keyframes sparkle {
+      0%,
+      100% {
+        opacity: 0.5;
+        transform: scale(0.8) rotate(0);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.15) rotate(18deg);
+      }
+    }
+
+    .character {
+      position: relative;
+      z-index: 1;
+      width: 128px;
+      margin: 0;
+      text-align: center;
+      animation: character-idle 2.8s ease-in-out infinite;
+    }
+
+    .character:nth-of-type(2) {
+      animation-delay: 0.45s;
+    }
+
+    .character-illustration {
+      display: block;
+      width: 128px;
+      height: 178px;
+      margin: 0 auto 5px;
+      overflow: visible;
+      filter: drop-shadow(0 8px 7px #5875a833);
+    }
+
+    .character .eye {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: cartoon-blink 4.5s ease-in-out infinite;
+    }
+
+    .character .mouth-open {
+      display: none;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .character.is-speaking .mouth-closed {
+      display: none;
+    }
+
+    .character.is-speaking .mouth-open {
+      display: inline;
+      animation: cartoon-talk 0.22s ease-in-out infinite alternate;
+    }
+
+    .character.is-speaking .arm-right {
+      transform-box: fill-box;
+      transform-origin: 8% 8%;
+      animation: character-gesture 0.55s ease-in-out infinite alternate;
+    }
+
+    .character.is-speaking {
+      animation: character-speaking 0.42s ease-in-out infinite alternate;
+    }
+
+    .character[data-character="calvin-rich"] .hair-cap {
+      fill: #493735;
+    }
+
+    .character[data-character="calvin-old"] .hair-cap,
+    .character[data-character="calvin-old"] .hair-curl {
+      fill: #c4cbd2;
+    }
+
+    .character[data-character="calvin-old"] .wrinkle {
+      opacity: 1;
+    }
+
+    .character[data-character="woman"] .hair-cap,
+    .character[data-character="woman"] .hair-curl {
+      fill: #493735;
+    }
+
+    .character[data-character="woman"] .character-shirt {
+      fill: #62b9a7;
+    }
+
+    .character[data-character="neighbor"] .hair-cap {
+      fill: #323c5a;
+    }
+
+    .character[data-character="neighbor"] .character-shirt {
+      fill: #d78caa;
+    }
+
+    .character[data-character="calvin-rich"] .character-shirt {
+      fill: #4775ad;
+    }
+
+    .character[data-character="calvin-old"] .character-shirt {
+      fill: #70849a;
+    }
+
+    .character-transformation::before {
+      position: absolute;
+      top: 28%;
+      left: 50%;
+      width: 125px;
+      height: 125px;
+      border: 4px solid rgba(255, 255, 255, 0.85);
+      border-radius: 50%;
+      content: "";
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.25);
+      pointer-events: none;
+    }
+
+    .scene--shock .character-transformation::before {
+      animation: transformation-flash 1.2s ease-out both;
+    }
+
+    .scene--shock .character-transformation .character-illustration {
+      animation: transformation-reveal 0.9s 0.15s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+    }
+
+    .character figcaption {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.88);
+      color: #52729b;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    @keyframes character-idle {
+      0%,
+      100% {
+        transform: translateY(0) rotate(0);
+      }
+      50% {
+        transform: translateY(-7px) rotate(1deg);
+      }
+    }
+
+    @keyframes cartoon-blink {
+      0%,
+      45%,
+      49%,
+      100% {
+        transform: scaleY(1);
+      }
+      47% {
+        transform: scaleY(0.12);
+      }
+    }
+
+    @keyframes cartoon-talk {
+      from {
+        transform: scaleY(0.65);
+      }
+      to {
+        transform: scaleY(1.15);
+      }
+    }
+
+    @keyframes character-gesture {
+      from {
+        transform: rotate(-5deg);
+      }
+      to {
+        transform: rotate(12deg);
+      }
+    }
+
+    @keyframes character-speaking {
+      from {
+        transform: translateY(-2px) scale(1);
+      }
+      to {
+        transform: translateY(-6px) scale(1.025);
+      }
+    }
+
+    @keyframes transformation-flash {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.25);
+      }
+      35% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.35);
+      }
+    }
+
+    @keyframes transformation-reveal {
+      0% {
+        opacity: 0;
+        transform: scale(0.65) rotate(-7deg);
+      }
+      65% {
+        opacity: 1;
+        transform: scale(1.08) rotate(3deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    .scene--night .character {
+      animation-duration: 4s;
+      transform-origin: center bottom;
+    }
+
+    .scene--night .character-stage {
+      background: linear-gradient(160deg, #617cb9, #9e9bd7);
+    }
+
+    .scene--night .character-stage::before,
+    .scene--night .character-stage::after {
+      color: #fff7c9;
+    }
+
+    .scene--kindness .character {
+      animation-duration: 2.2s;
+    }
+
+    .scene--kindness .character-illustration {
+      filter: drop-shadow(0 8px 12px #ffacd866);
+    }
+
+    .scene-copy {
+      align-self: center;
+      padding: 28px;
+    }
+
+    .scene-setting {
+      margin-bottom: 18px;
+      color: #6684a8;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.7;
+    }
+
+    .dialogue {
+      width: fit-content;
+      max-width: 100%;
+      margin-bottom: 13px;
+      padding: 13px 16px;
+      border-radius: 19px 19px 19px 6px;
+      background: white;
+      box-shadow: 0 5px 16px #91bfe522;
+      opacity: 0;
+    }
+
+    .dialogue:nth-of-type(even) {
+      margin-left: auto;
+      border-radius: 19px 19px 6px 19px;
+      background: #fff3fa;
+    }
+
+    .dialogue.is-visible {
+      animation: bubble-in 0.35s ease both;
+    }
+
+    .dialogue.is-speaking {
+      box-shadow: 0 7px 20px #91bfe544;
+    }
+
+    @keyframes bubble-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .dialogue strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #4388c9;
+      font-size: 12px;
+    }
+
+    .dialogue p {
+      color: #526f91;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .lesson {
+      margin-top: 16px;
+      padding: 15px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.85);
+      color: #52729b;
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .lesson strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #4388c9;
+    }
+
+    .reader-controls {
+      margin-top: 22px;
+    }
+
+    .reader-button {
+      min-width: 112px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #68c9ff, #648eff);
+      box-shadow: 0 8px 20px #70baff44;
+      color: white;
+      cursor: pointer;
+      font: 600 14px 'Poppins', sans-serif;
+      transition: transform 0.2s ease;
+    }
+
+    .reader-button:hover {
+      transform: translateY(-3px);
+    }
+
+    .scene-dots {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+    }
+
+    .scene-dot {
+      width: 11px;
+      height: 11px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #d7e8f7;
+      cursor: pointer;
+    }
+
+    .scene-dot[aria-pressed="true"] {
+      background: #648eff;
+      transform: scale(1.2);
+    }
+
+    footer {
+      padding: 25px 20px;
+      background: #dff3ff;
+      color: #6286a8;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .story-panel.is-active {
+        grid-template-columns: 1fr;
+      }
+
+      .character-stage {
+        min-height: 235px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 18px 5%;
+      }
+
+      .character-stage {
+        min-height: 170px;
+        padding: 18px;
+      }
+
+      .character {
+        width: 125px;
+      }
+
+      .character-illustration {
+        width: 120px;
+        height: 168px;
+      }
+
+      .scene-copy {
+        padding: 22px 18px;
+      }
+
+      .reader {
+        padding: 19px 15px;
+      }
+
+      .reader-controls {
+        flex-wrap: wrap;
+      }
+
+      .scene-dots {
+        order: -1;
+        width: 100%;
+      }
+
+      .reader-button {
+        min-width: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav aria-label="Main navigation">
+    <a class="logo" href="index.html">Blue<span>Dream</span> 💙</a>
+    <a class="back-link" href="stories.html">← All stories</a>
+  </nav>
+
+  <main>
+    <header class="story-header">
+      <h1>The Greedy Man</h1>
+      <p>A fictional story about kindness, compassion, and learning to change.</p>
+    </header>
+
+    <article class="reader" aria-label="The Greedy Man story">
+      <div class="reader-top">
+        <h2>A story in scenes</h2>
+        <p class="scene-count" id="sceneCount" aria-live="polite">Scene 1 of 7</p>
+      </div>
+
+      <section class="story-panel scene--road is-active" data-scene="0" aria-hidden="false" aria-label="Scene 1">
+        <div class="character-stage">
+          <figure class="character" data-character="calvin-rich">
+            <figcaption>Calvin</figcaption>
+          </figure>
+          <figure class="character" data-character="woman">
+            <figcaption>The woman</figcaption>
+          </figure>
+        </div>
+        <div class="scene-copy">
+          <p class="scene-setting">One afternoon, wealthy Calvin sat in his luxurious car when he saw a woman asking for help.</p>
+          <div class="dialogue" data-speaker="woman">
+            <strong>The woman</strong>
+            <p>“Could you spare a dollar? I haven’t had anything to eat today.”</p>
+          </div>
+          <div class="dialogue" data-speaker="calvin-rich">
+            <strong>Calvin</strong>
+            <p>“A dirty, poor woman like you? Never!” He spat near her and drove away.</p>
+          </div>
+          <div class="dialogue" data-speaker="woman">
+            <strong>The woman</strong>
+            <p>“You don’t know what you’ve done,” she said softly.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-panel scene--shock" data-scene="1" aria-hidden="true" aria-label="Scene 2">
+        <div class="character-stage">
+          <figure class="character character-transformation" data-character="calvin-old">
+            <figcaption>Calvin</figcaption>
+          </figure>
+        </div>
+        <div class="scene-copy">
+          <p class="scene-setting">That night, Calvin came home tired and fell asleep on the couch. The next morning, he hurried to look in the mirror.</p>
+          <div class="dialogue" data-speaker="calvin-old">
+            <strong>Calvin</strong>
+            <p>“Who is that? This can’t be me!”</p>
+          </div>
+          <div class="dialogue">
+            <strong>Narrator</strong>
+            <p>His reflection showed an old man in worn clothes. Calvin had become someone who needed help himself.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-panel scene--car" data-scene="2" aria-hidden="true" aria-label="Scene 3">
+        <div class="character-stage">
+          <figure class="character" data-character="calvin-old">
+            <figcaption>Calvin</figcaption>
+          </figure>
+          <figure class="character" data-character="woman">
+            <figcaption>The woman</figcaption>
+          </figure>
+        </div>
+        <div class="scene-copy">
+          <p class="scene-setting">Later, Calvin saw the same woman in a car. She stopped and offered him a dollar.</p>
+          <div class="dialogue" data-speaker="calvin-old">
+            <strong>Calvin</strong>
+            <p>“Please, could you help me with a dollar?”</p>
+          </div>
+          <div class="dialogue" data-speaker="woman">
+            <strong>The woman</strong>
+            <p>“Here you are. Be wise with what you’ve learned.”</p>
+          </div>
+          <div class="dialogue">
+            <strong>Narrator</strong>
+            <p>Calvin watched her drive away and held the dollar carefully in his hand.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-panel scene--reflection" data-scene="3" aria-hidden="true" aria-label="Scene 4">
+        <div class="character-stage">
+          <figure class="character" data-character="calvin-old">
+            <figcaption>Calvin</figcaption>
+          </figure>
+        </div>
+        <div class="scene-copy">
+          <p class="scene-setting">For the first time, Calvin understood how lonely and frightening it could feel to need help.</p>
+          <div class="dialogue" data-speaker="calvin-old">
+            <strong>Calvin</strong>
+            <p>“Why was I so greedy? Why did I treat people as if they didn’t matter?”</p>
+          </div>
+          <div class="dialogue">
+            <strong>Narrator</strong>
+            <p>He knew he had to face the people he had hurt and try to make things right.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-panel scene--apology" data-scene="4" aria-hidden="true" aria-label="Scene 5">
+        <div class="character-stage">
+          <figure class="character" data-character="calvin-old">
+            <figcaption>Calvin</figcaption>
+          </figure>
+          <figure class="character" data-character="neighbor">
+            <figcaption>A neighbor</figcaption>
+          </figure>
+        </div>
+        <div class="scene-copy">
+          <p class="scene-setting">Calvin began finding the people he had treated badly and apologized to each one.</p>
+          <div class="dialogue" data-speaker="calvin-old">
+            <strong>Calvin</strong>
+            <p>“I’m sorry for the way I treated you. You deserved kindness, and I was wrong.”</p>
+          </div>
+          <div class="dialogue">
+            <strong>Narrator</strong>
+            <p>Some people needed time. Calvin listened, respected their feelings, and kept trying to do better.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-panel scene--night" data-scene="5" aria-hidden="true" aria-label="Scene 6">
+        <div class="character-stage">
+          <figure class="character" data-character="calvin-old">
+            <figcaption>Calvin</figcaption>
+          </figure>
+        </div>
+        <div class="scene-copy">
+          <p class="scene-setting">After two days of making amends, Calvin was exhausted. That night, he lay on the ground beneath the stars and fell asleep.</p>
+          <div class="dialogue" data-speaker="calvin-old">
+            <strong>Calvin</strong>
+            <p>“I’ll remember what it feels like to need help. I want to be kinder from now on.”</p>
+          </div>
+          <div class="dialogue">
+            <strong>Narrator</strong>
+            <p>When morning came, Calvin opened his eyes, back in his own body again.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-panel scene--kindness" data-scene="6" aria-hidden="true" aria-label="Scene 7">
+        <div class="character-stage">
+          <figure class="character" data-character="calvin-rich">
+            <figcaption>Calvin</figcaption>
+          </figure>
+          <figure class="character" data-character="neighbor">
+            <figcaption>A neighbor</figcaption>
+          </figure>
+        </div>
+        <div class="scene-copy">
+          <p class="scene-setting">Calvin thanked God for another chance and chose to use his wealth to help feed people in need.</p>
+          <div class="dialogue" data-speaker="calvin-rich">
+            <strong>Calvin</strong>
+            <p>“A person’s worth isn’t measured by how much money they have. Everyone deserves compassion.”</p>
+          </div>
+          <div class="lesson">
+            <strong>The lesson</strong>
+            Real change begins when we recognize the hurt we’ve caused and choose to treat others with kindness.
+          </div>
+        </div>
+      </section>
+
+      <div class="reader-controls">
+        <button class="reader-button" id="scenePrevious" type="button" aria-label="Previous scene">← Previous</button>
+        <div class="scene-dots" id="sceneDots" role="group" aria-label="Choose a scene"></div>
+        <button class="reader-button" id="sceneNext" type="button" aria-label="Next scene">Next →</button>
+      </div>
+    </article>
+  </main>
+
+  <footer>Made with <span style="color: #ff82bd;">♥</span> and a little sprinkle of magic ✨</footer>
+
+  <template id="characterArtTemplate">
+    <svg class="character-illustration" viewBox="0 0 180 250" aria-hidden="true">
+      <ellipse cx="90" cy="237" rx="39" ry="7" fill="#7394bd" opacity="0.22"></ellipse>
+      <path class="character-pants" d="M57 185 L88 185 L83 222 L72 229 L62 220Z" fill="#526a86"></path>
+      <path class="character-pants" d="M91 185 L123 185 L119 220 L106 229 L96 222Z" fill="#526a86"></path>
+      <path d="M61 220 Q71 222 83 221 L84 231 Q70 237 56 231Z" fill="#354866"></path>
+      <path d="M97 221 Q108 223 120 218 L126 229 Q112 238 96 232Z" fill="#354866"></path>
+      <path class="arm arm-left" d="M57 130 Q42 133 38 153 L33 177 Q38 184 47 181 L62 151Z" fill="#f1c39f"></path>
+      <path class="arm arm-right" d="M123 130 Q138 133 142 153 L147 177 Q142 184 133 181 L118 151Z" fill="#f1c39f"></path>
+      <path class="character-shirt" d="M57 124 Q90 112 123 124 L137 194 Q92 207 43 194Z" fill="#4775ad"></path>
+      <path class="tie" d="M83 125 L97 125 L94 143 L101 173 L90 182 L79 173 L86 143Z" fill="#f18cc8"></path>
+      <path d="M66 64 Q63 49 73 42 L110 42 Q120 51 115 67 L110 113 Q90 128 70 112Z" fill="#edb58e"></path>
+      <ellipse cx="51" cy="82" rx="8" ry="12" fill="#edb58e"></ellipse>
+      <ellipse cx="129" cy="82" rx="8" ry="12" fill="#edb58e"></ellipse>
+      <ellipse cx="90" cy="78" rx="39" ry="46" fill="#f4c8a4"></ellipse>
+      <path class="hair-cap" d="M51 79 Q47 34 85 28 Q125 24 133 61 Q118 51 101 54 Q77 55 60 77 L57 91Z" fill="#493735"></path>
+      <g class="hair-curls" style="display: none;">
+        <circle class="hair-curl" cx="58" cy="61" r="13"></circle>
+        <circle class="hair-curl" cx="70" cy="43" r="14"></circle>
+        <circle class="hair-curl" cx="90" cy="36" r="14"></circle>
+        <circle class="hair-curl" cx="111" cy="43" r="14"></circle>
+        <circle class="hair-curl" cx="124" cy="61" r="13"></circle>
+        <circle class="hair-curl" cx="58" cy="79" r="12"></circle>
+        <circle class="hair-curl" cx="122" cy="79" r="12"></circle>
+      </g>
+      <path class="eyebrow" d="M69 72 Q77 67 84 72 M97 72 Q105 67 112 72" fill="none" stroke="#67463e" stroke-width="3" stroke-linecap="round"></path>
+      <g class="eye">
+        <ellipse cx="77" cy="82" rx="4" ry="6" fill="#fff"></ellipse>
+        <circle cx="78" cy="83" r="2.5" fill="#31455f"></circle>
+      </g>
+      <g class="eye">
+        <ellipse cx="103" cy="82" rx="4" ry="6" fill="#fff"></ellipse>
+        <circle cx="104" cy="83" r="2.5" fill="#31455f"></circle>
+      </g>
+      <path d="M90 84 Q86 96 92 97" fill="none" stroke="#c88468" stroke-width="2" stroke-linecap="round"></path>
+      <path class="mouth-closed" d="M80 105 Q90 112 100 105" fill="none" stroke="#8d4e54" stroke-width="3" stroke-linecap="round"></path>
+      <ellipse class="mouth-open" cx="90" cy="106" rx="5" ry="7" fill="#8d4e54"></ellipse>
+      <path class="wrinkle" d="M66 91 L74 93 M106 93 L114 91" fill="none" stroke="#c88468" stroke-width="2" stroke-linecap="round" opacity="0"></path>
+    </svg>
+  </template>
+
+  <script>
+    const scenes = Array.from(document.querySelectorAll(".story-panel"));
+    const sceneDots = document.getElementById("sceneDots");
+    const sceneCount = document.getElementById("sceneCount");
+    const scenePrevious = document.getElementById("scenePrevious");
+    const sceneNext = document.getElementById("sceneNext");
+    const characterArtTemplate = document.getElementById("characterArtTemplate");
+    let conversationTimers = [];
+    let activeScene = 0;
+
+    document.querySelectorAll(".character").forEach((character) => {
+      character.insertBefore(characterArtTemplate.content.cloneNode(true), character.querySelector("figcaption"));
+    });
+
+    document.querySelectorAll(".character").forEach((character) => {
+      const curls = character.querySelector(".hair-curls");
+      if (character.dataset.character === "woman") {
+        curls.style.display = "block";
+      }
+      if (character.dataset.character === "calvin-old") {
+        curls.style.display = "block";
+      }
+    });
+
+    scenes.forEach((scene, index) => {
+      const dot = document.createElement("button");
+      dot.className = "scene-dot";
+      dot.type = "button";
+      dot.setAttribute("aria-label", `Go to scene ${index + 1}`);
+      dot.setAttribute("aria-pressed", index === activeScene ? "true" : "false");
+      dot.addEventListener("click", () => showScene(index));
+      sceneDots.appendChild(dot);
+    });
+
+    function animateConversation(scene) {
+      conversationTimers.forEach((timer) => window.clearTimeout(timer));
+      conversationTimers = [];
+
+      scenes.forEach((storyScene) => {
+        storyScene.querySelectorAll(".dialogue").forEach((dialogue) => {
+          dialogue.classList.remove("is-visible", "is-speaking");
+        });
+        storyScene.querySelectorAll(".character").forEach((character) => {
+          character.classList.remove("is-speaking");
+        });
+      });
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const lineDelay = reducedMotion ? 450 : 1500;
+
+      scene.querySelectorAll(".dialogue").forEach((dialogue, index) => {
+        conversationTimers.push(window.setTimeout(() => {
+          dialogue.classList.add("is-visible");
+          const speaker = dialogue.dataset.speaker;
+          if (!speaker) {
+            return;
+          }
+
+          const character = scene.querySelector(`[data-character="${speaker}"]`);
+          if (!character) {
+            return;
+          }
+
+          character.classList.add("is-speaking");
+          dialogue.classList.add("is-speaking");
+          conversationTimers.push(window.setTimeout(() => {
+            character.classList.remove("is-speaking");
+            dialogue.classList.remove("is-speaking");
+          }, lineDelay * 0.75));
+        }, index * lineDelay + 100));
+      });
+    }
+
+    function showScene(index) {
+      activeScene = (index + scenes.length) % scenes.length;
+      scenes.forEach((scene, sceneIndex) => {
+        const isActive = sceneIndex === activeScene;
+        scene.classList.toggle("is-active", isActive);
+        scene.setAttribute("aria-hidden", String(!isActive));
+        sceneDots.children[sceneIndex].setAttribute("aria-pressed", String(isActive));
+      });
+
+      sceneCount.textContent = `Scene ${activeScene + 1} of ${scenes.length}`;
+      sceneNext.textContent = activeScene === scenes.length - 1 ? "Read again ↻" : "Next →";
+      sceneNext.setAttribute("aria-label", activeScene === scenes.length - 1 ? "Read the story again" : "Next scene");
+      animateConversation(scenes[activeScene]);
+    }
+
+    scenePrevious.addEventListener("click", () => showScene(activeScene - 1));
+    sceneNext.addEventListener("click", () => {
+      showScene(activeScene === scenes.length - 1 ? 0 : activeScene + 1);
+    });
+
+    animateConversation(scenes[activeScene]);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey) {
+        return;
+      }
+
+      if (event.key === "ArrowRight") {
+        showScene(activeScene + 1);
+      } else if (event.key === "ArrowLeft") {
+        showScene(activeScene - 1);
+      }
+    });
+  </script>
+</body>
+</html>
